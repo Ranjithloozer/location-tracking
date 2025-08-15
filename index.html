@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Location Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Legal Location Tracker</h1>
+        <p>Ranjith,tracking the location using mobile number with the help of otp verification</p>
+        
+        <form id="otp-form">
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" placeholder="+91XXXXXXXXXX" required>
+            
+            <button type="button" onclick="sendOTP()">Send OTP</button>
+            
+            <label for="otp" id="otp-label" style="display:none;">Enter OTP:</label>
+            <input type="text" id="otp" placeholder="6-digit OTP" style="display:none;" required>
+            
+            <button type="button" id="verify-btn" onclick="verifyOTP()" style="display:none;">Verify OTP</button>
+        </form>
+        
+        <div id="status"></div>
+        
+        <div id="map" style="display:none; height: 400px; width: 100%;"></div>
+        <button id="stop-btn" onclick="stopTracking()" style="display:none; margin-top: 10px;">Stop Tracking</button>
+        <button id="share-btn" onclick="shareLocation()" style="display:none; margin-top: 10px;">Share Location Link</button>
+        <button id="reset-btn" onclick="resetApp()" style="display:none; margin-top: 10px;">Reset App</button>
+        <div id="history" style="display:none; margin-top: 20px;"></div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
