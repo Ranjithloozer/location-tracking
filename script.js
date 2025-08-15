@@ -6,7 +6,7 @@ let trackingInterval = null;
 let initialLat = null;
 let initialLng = null;
 let locationHistory = [];
-let accuracyAlertShown = false; // Flag to limit alert
+let accuracyAlertShown = false;
 
 async function sendOTP() {
     const mobile = document.getElementById('mobile').value;
@@ -16,7 +16,7 @@ async function sendOTP() {
     }
 
     const accountSid = 'ACd5b83badc9b6b4912a6e08e6f0ad7d0c';
-    const authToken = '2eee9c7e04a8b54b45debbf00d4e5601';
+    const authToken = 'de62e4d1ddf4e91c881521ad238c8d84'; // Updated Auth Token
     const verifySid = 'VA0dad02f811fd6b46b8c81845b088bb4f';
 
     const url = `https://verify.twilio.com/v2/Services/${verifySid}/Verifications`;
@@ -36,18 +36,18 @@ async function sendOTP() {
         });
 
         const result = await response.json();
-        console.log('Twilio Response:', result);
+        console.log('Twilio Response:', { status: response.status, body: result }); // Detailed debug
         if (response.status === 201 && result.status === 'pending') {
             document.getElementById('otp-label').style.display = 'block';
             document.getElementById('otp').style.display = 'block';
             document.getElementById('verify-btn').style.display = 'block';
             document.getElementById('status').innerText = 'OTP sent via SMS! Check your phone.';
         } else {
-            document.getElementById('status').innerText = `Failed to send OTP. Status: ${result.status}. Check Twilio Console (verify number or balance).`;
+            document.getElementById('status').innerText = `Failed to send OTP. Status: ${response.status} (${result.message || 'Authentication Error'}). Check Twilio Console (verify credentials, number, or balance).`;
         }
     } catch (error) {
         console.error('Fetch Error:', error);
-        document.getElementById('status').innerText = `Error sending OTP: ${error.message}. Verify credentials or network.`;
+        document.getElementById('status').innerText = `Error sending OTP: ${error.message}. Verify network, credentials, or Twilio status.`;
     }
 }
 
@@ -60,7 +60,7 @@ async function verifyOTP() {
 
     const mobile = document.getElementById('mobile').value;
     const accountSid = 'ACd5b83badc9b6b4912a6e08e6f0ad7d0c';
-    const authToken = '2eee9c7e04a8b54b45debbf00d4e5601';
+    const authToken = 'de62e4d1ddf4e91c881521ad238c8d84'; // Updated Auth Token
     const verifySid = 'VA0dad02f811fd6b46b8c81845b088bb4f';
 
     const url = `https://verify.twilio.com/v2/Services/${verifySid}/VerificationCheck`;
@@ -80,7 +80,7 @@ async function verifyOTP() {
         });
 
         const result = await response.json();
-        console.log('Verification Response:', result);
+        console.log('Verification Response:', { status: response.status, body: result });
         if (result.status === 'approved') {
             document.getElementById('status').innerText = 'OTP Verified! Accessing location...';
             if (navigator.geolocation) {
@@ -101,7 +101,7 @@ function showPosition(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
     if (!accuracyAlertShown && position.coords.accuracy > 100) {
-        alert('For better accuracy, enable GPS and move outdoors. This alert will not repeat.');
+        alert('For better accuracy, enable GPS and move outdoors. This alert will not repeat until reset.');
         accuracyAlertShown = true;
     }
     if (!initialLat || !initialLng) {
@@ -142,7 +142,7 @@ function updatePosition(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
     if (!accuracyAlertShown && position.coords.accuracy > 100) {
-        alert('For better accuracy, enable GPS and move outdoors. This alert will not repeat.');
+        alert('For better accuracy, enable GPS and move outdoors. This alert will not repeat until reset.');
         accuracyAlertShown = true;
     }
     document.getElementById('status').innerText = `Updated Location: Lat ${lat}, Lng ${lng} (Accuracy: ~${position.coords.accuracy}m)`;
@@ -189,7 +189,7 @@ function resetApp() {
     geofence = null;
     initialLat = null;
     initialLng = null;
-    accuracyAlertShown = false; // Reset alert flag on reset
+    accuracyAlertShown = false;
 }
 
 function shareLocation() {
