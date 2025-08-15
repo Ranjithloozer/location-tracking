@@ -41,4 +41,4 @@ This project is open-source under the MIT License. Feel free to modify and distr
  Contributions
 Contributions are welcome! Please fork the repository and submit pull requests.
 
-GITHUB LINK : 
+GITHUB LINK : https://ranjithloozer.github.io/location-tracking
